@@ -1,6 +1,6 @@
 // Configuración global
 const CONFIG = {
-    adminPassword: 'admin123', // Cambia esta contraseña
+    adminPassword: '955838788', // Cambia esta contraseña
     storageKey: 'shoeStoreData'
 };
 
