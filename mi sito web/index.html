@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda de Zapatos - Calzado para gente Fina</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <img src="img/logo.png" alt="Logo Tienda" class="logo">
+            <h1>Calzado Premium</h1>
+            <button id="admin-btn" class="admin-btn">Admin</button>
+        </div>
+    </header>
+
+    <!-- Panel de Login de Administrador -->
+    <div id="admin-login" class="admin-login hidden">
+        <div class="login-form">
+            <h2>Acceso Administrador</h2>
+            <input type="password" id="admin-password" placeholder="Contraseña">
+            <button id="login-btn">Entrar</button>
+            <button id="cancel-login">Cancelar</button>
+        </div>
+    </div>
+
+    <!-- Panel de Administración -->
+    <div id="admin-panel" class="admin-panel hidden">
+        <div class="admin-controls">
+            <h2>Panel de Administración</h2>
+            <div class="admin-actions">
+                <button id="add-shoe-btn">Agregar Zapato</button>
+                <button id="logout-btn">Cerrar Sesión</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulario para Agregar/Editar Zapatos -->
+    <div id="shoe-form" class="shoe-form hidden">
+        <div class="form-content">
+            <h2 id="form-title">Agregar Nuevo Zapato</h2>
+            <form id="shoe-data-form">
+                <div class="form-group">
+                    <label for="shoe-name">Nombre del Zapato:</label>
+                    <input type="text" id="shoe-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="shoe-price">Precio:</label>
+                    <input type="number" id="shoe-price" step="0.01" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="shoe-description">Descripción:</label>
+                    <textarea id="shoe-description" rows="4" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="shoe-sizes">Tallas disponibles:</label>
+                    <input type="text" id="shoe-sizes" placeholder="Ej: 38, 39, 40, 41, 42" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="shoe-contact">Información de contacto:</label>
+                    <textarea id="shoe-contact" rows="3" placeholder="WhatsApp, teléfono, email, etc." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="shoe-image">Imagen del zapato:</label>
+                    <input type="file" id="shoe-image" accept="image/*">
+                    <div id="image-preview" class="image-preview"></div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" id="save-shoe-btn">Guardar</button>
+                    <button type="button" id="cancel-form-btn">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main>
+        <div class="container">
+            <h2 class="section-title">Nuestros Zapatos</h2>
+            
+            <!-- Galería de Zapatos -->
+            <div id="shoes-gallery" class="shoes-gallery">
+                <!-- Los zapatos se cargarán dinámicamente aquí -->
+            </div>
+
+            <!-- Mensaje cuando no hay zapatos -->
+            <div id="no-shoes-message" class="no-shoes-message hidden">
+                <p>No hay zapatos disponibles en este momento.</p>
+                <p>¡Pronto agregaremos nuevos productos!</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal para Ver Zapato en Detalle -->
+    <div id="shoe-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modal-shoe-image" src="" alt="">
+                </div>
+                <div class="modal-info">
+                    <h2 id="modal-shoe-name"></h2>
+                    <p class="price" id="modal-shoe-price"></p>
+                    <p class="description" id="modal-shoe-description"></p>
+                    <div class="sizes">
+                        <strong>Tallas disponibles:</strong>
+                        <span id="modal-shoe-sizes"></span>
+                    </div>
+                    <div class="contact">
+                        <strong>Contacto:</strong>
+                        <div id="modal-shoe-contact"></div>
+                    </div>
+                    <!-- Botones de administrador (solo visibles para admin) -->
+                    <div id="modal-admin-actions" class="modal-admin-actions hidden">
+                        <button id="edit-shoe-btn" class="btn-edit">Editar</button>
+                        <button id="delete-shoe-btn" class="btn-delete">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 Calzado Premium. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Overlay para modales -->
+    <div id="overlay" class="overlay hidden"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
