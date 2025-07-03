@@ -111,18 +111,33 @@ function saveDataToStorage() {
         shoes: state.shoes,
         timestamp: new Date().toISOString()
     };
-    // Usamos una variable global en lugar de localStorage
-    window.shoeStoreData = data;
+    try {
+        localStorage.setItem(CONFIG.storageKey, JSON.stringify(data));
+        console.log('Datos guardados correctamente');
+    } catch (error) {
+        console.error('Error al guardar datos:', error);
+        showNotification('Error al guardar los datos', 'error');
+    }
 }
 
 function loadDataFromStorage() {
-    // Cargamos desde la variable global
-    const data = window.shoeStoreData;
-    if (data && data.shoes) {
-        state.shoes = data.shoes;
-    } else {
-        // Datos de ejemplo para mostrar
-        state.shoes = [
+    try {
+        const storedData = localStorage.getItem(CONFIG.storageKey);
+        if (storedData) {
+            const data = JSON.parse(storedData);
+            if (data && data.shoes) {
+                state.shoes = data.shoes;
+                console.log('Datos cargados correctamente');
+                return;
+            }
+        }
+    } catch (error) {
+        console.error('Error al cargar datos:', error);
+    }
+    
+    // Si no hay datos guardados o hay error, usar datos de ejemplo
+    console.log('Cargando datos de ejemplo');
+    state.shoes = [
             {
                 id: 1,
                 name: "Zapatos Deportivos Premium",
@@ -142,7 +157,6 @@ function loadDataFromStorage() {
                 image: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDMwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIzMDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjZjBmMGYwIi8+CjxwYXRoIGQ9Ik01MCA4MEM1MCA2MCA4MCA0MCA5MCA0MEM5MCA0MCAyMDAgNDAgMjUwIDUwQzI1MCA1MCAyODAgNjAgMjgwIDkwQzI4MCA5MCAyODAgMTIwIDI2MCAxMzBDMjYwIDEzMCAyMDAgMTQwIDkwIDE0MEM5MCAxNDAgNTAgMTMwIDUwIDEwMEM1MCAxMDAgNTAgOTAgNTAgODBaIiBmaWxsPSIjMmMzZTUwIi8+CjxyZWN0IHg9IjEwMCIgeT0iNjAiIHdpZHRoPSIxMDAiIGhlaWdodD0iMzAiIGZpbGw9IiMyYzNlNTAiLz4KPHR5cGUgeD0iMTUwIiB5PSIxNzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzY2NiIgdGV4dC1hbmNob3I9Im1pZGRsZSI+WmFwYXRvIEZvcm1hbDwvdGV4dD4KPC9zdmc+Cg=="
             }
         ];
-    }
 }
 
 // Funciones de autenticación
@@ -468,6 +482,16 @@ window.addEventListener('beforeunload', function(e) {
     }
 });
 
+// Función para limpiar datos (útil para testing)
+function clearAllData() {
+    if (confirm('¿Estás seguro de que deseas eliminar TODOS los datos? Esta acción no se puede deshacer.')) {
+        localStorage.removeItem(CONFIG.storageKey);
+        state.shoes = [];
+        renderShoes();
+        showNotification('Todos los datos han sido eliminados', 'info');
+    }
+}
+
 // Función para exportar datos (útil para respaldo)
 function exportData() {
     const data = {
@@ -482,6 +506,7 @@ function exportData() {
     a.download = `zapatos_backup_${new Date().toISOString().split('T')[0]}.json`;
     a.click();
     URL.revokeObjectURL(url);
+    showNotification('Datos exportados correctamente', 'success');
 }
 
 // Función para importar datos
@@ -506,6 +531,13 @@ function importData(jsonData) {
 window.shoeStoreDebug = {
     exportData,
     importData,
+    clearAllData,
     state,
-    CONFIG
+    CONFIG,
+    // Función para ver datos almacenados
+    viewStoredData: () => {
+        const data = localStorage.getItem(CONFIG.storageKey);
+        console.log('Datos almacenados:', data ? JSON.parse(data) : 'No hay datos');
+        return data ? JSON.parse(data) : null;
+    }
 };
